@@ -7,16 +7,14 @@ and you want to make an educated guess about what the system is going to do next
 - A lidar sensor that measures our position in cartesian-coordinates `(x, y)`
 - A radar sensor that measures our position and velocity in polar coordinates `(rho, phi, drho)`
 
-**We want to predict our position, how fast something is going in what direction at any point in time, and how fast it is
-turning (yaw rate) in the case that we are: **
-- In essence: the position of the system in cartesian coordinates, the velocity magnitude, the yaw angle, and yaw rate  `(x, y, v, yaw, yawrate)`
-- NOTE: We are assuming a **constant turn/yaw rate and velocity magnitude model** (CRTV) for this particular system
+**We want to predict a tracked object's position, how fast it's going in what direction, and how fast it is
+turning (yaw rate) at any point in time. 
+- In essence we want to get: the position of the system in cartesian coordinates, the velocity magnitude, the yaw angle in radians, and yaw rate  in radians per second `(x, y, v, yaw, yawrate)`
+- We are assuming a **constant turn/yaw rate and velocity magnitude model** (CRTV) for this particular system
 
 **This unscented kalman filter does just that.** 
 
-- NOTE: Compared with an [Extended Kalman Filter](https://github.com/mithi/Fusion-EKF-CPP) with a constant velocity model, RMSE should be lower for the unscented Kalman 
-filter especially for velocity. The CTRV model is more precise than a constant velocity model. 
-And UKF is also known for handling non-linear equations better than EKF.
+- NOTE: Compared with an [Extended Kalman Filter](https://github.com/mithi/Fusion-EKF-CPP) with a constant velocity model, RMSE should be lower for the unscented Kalman filter especially for velocity. The CTRV model is more precise than a constant velocity model. And UKF is also known for handling non-linear equations better than EKF.
 
 -----
 # CONTENTS
