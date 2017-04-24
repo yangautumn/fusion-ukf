@@ -69,6 +69,13 @@ time_stamp  px_state  py_state  v_state yaw_angle_state yaw_rate_state  sensor_t
 -----
 # Notes
 
+If you take a look at [settings](https://github.com/mithi/Fusion-UKF-CPP/blob/master/headers/settings.h) you'll see the following:
+```
+//process noise standard deviations
+const double STD_SPEED_NOISE = 0.9; // longitudinal acceleration in m/s^2
+const double STD_YAWRATE_NOISE = 0.6; // yaw acceleration in rad/s^2
+```
+
 Here's the terminal output from the given data set
 ![terminal output](https://github.com/mithi/Fusion-UKF-CPP/blob/master/images/terminal_output.png)
 
