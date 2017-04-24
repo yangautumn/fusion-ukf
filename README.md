@@ -1,4 +1,4 @@
-# Introduction
+# INTRODUCTION
 This is an unscented Kalman Filter implementation in C++ for fusing lidar and radar sensor measurements.
 A Kalman filter can be used anywhere where you have uncertain information about some dynamic system, 
 and you want to make an educated guess about what the system is going to do next. 
@@ -19,12 +19,12 @@ filter especially for velocity. The CTRV model is more precise than a constant v
 And UKF is also known for handling non-linear equations better than EKF.
 
 -----
-# Table of Contents
+# CONTENTS
 - Basic Usage
 - Notes
 
 -----
-# Basic Usage
+# BASIC USAGE
 - Dependencies are same as in [here](https://github.com/mithi/Fusion-EKF-CPP)
 - Clone this repository 
 ```
@@ -67,7 +67,7 @@ time_stamp  px_state  py_state  v_state yaw_angle_state yaw_rate_state  sensor_t
 ```
 
 -----
-# Notes
+# NOTES
 
 ### If you take a look at [settings](https://github.com/mithi/Fusion-UKF-CPP/blob/master/headers/settings.h) you'll see the following:
 ```
