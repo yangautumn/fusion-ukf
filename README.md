@@ -28,7 +28,7 @@ And UKF is also known for handling non-linear equations better than EKF.
 - Dependencies are same as in [here](https://github.com/mithi/Fusion-EKF-CPP)
 - Clone this repository 
 ```
-$ git clone https://github.com/mithi/Fusion-EKF-CPP/
+$ git clone https://github.com/mithi/Fusion-UKF-CPP/
 ```
 - Go inside the `build` folder and compile: 
 ```
