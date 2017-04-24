@@ -85,4 +85,4 @@ Here's my UKF algorithm overview
 ![UKF Algorithm Overview](https://github.com/mithi/Fusion-UKF-CPP/blob/master/images/FusionUKF_overview_1.png)
 
 And here's an overview of what the instantiated classes are doing
-![Subclasses](https://github.com/mithi/Fusion-UKF-CPP/blob/master/images/FusionUKF_overview_2.png)
+![UKF Algorithm Overview 2](https://github.com/mithi/Fusion-UKF-CPP/blob/master/images/FusionUKF_overview_2.png)
