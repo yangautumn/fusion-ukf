@@ -84,5 +84,5 @@ Here's a visualization of the Lidar's NIS
 Here's my UKF algorithm overview
 ![UKF Algorithm Overview](https://github.com/mithi/Fusion-UKF-CPP/blob/master/images/FusionUKF_overview_1.png)
 
-And here's an overview of what FusionUKF's class is doing
+And here's an overview of what the instantiated classes are doing
 ![Subclasses](https://github.com/mithi/Fusion-UKF-CPP/blob/master/images/FusionUKF_overview_2.png)
