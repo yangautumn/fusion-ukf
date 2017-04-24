@@ -69,27 +69,27 @@ time_stamp  px_state  py_state  v_state yaw_angle_state yaw_rate_state  sensor_t
 -----
 # Notes
 
-If you take a look at [settings](https://github.com/mithi/Fusion-UKF-CPP/blob/master/headers/settings.h) you'll see the following:
+### If you take a look at [settings](https://github.com/mithi/Fusion-UKF-CPP/blob/master/headers/settings.h) you'll see the following:
 ```
 //process noise standard deviations
 const double STD_SPEED_NOISE = 0.9; // longitudinal acceleration in m/s^2
 const double STD_YAWRATE_NOISE = 0.6; // yaw acceleration in rad/s^2
 ```
 
-Here's the terminal output from the given data set
+### Here's the terminal output from the given data set
 ![terminal output](https://github.com/mithi/Fusion-UKF-CPP/blob/master/images/terminal_output.png)
 
-Here's a visualization of how it's performing
+### Here's a visualization of how it's performing
 ![Visualization](https://github.com/mithi/Fusion-UKF-CPP/blob/master/images/graph-1.png)
 
-Here's a visualization of the Radar's NIS
+###  Here's a visualization of the Radar's NIS
 ![Radar's NIS](https://github.com/mithi/Fusion-UKF-CPP/blob/master/images/radar_nis.png)
 
-Here's a visualization of the Lidar's NIS
+### Here's a visualization of the Lidar's NIS
 ![Lidar's NIS](https://github.com/mithi/Fusion-UKF-CPP/blob/master/images/lidar_nis.png)
 
-Here's my UKF algorithm overview
+### Here's my UKF algorithm overview
 ![UKF Algorithm Overview](https://github.com/mithi/Fusion-UKF-CPP/blob/master/images/FusionUKF_overview_1.png)
 
-And here's an overview of what the instantiated classes are doing
+###  And here's an overview of what the instantiated classes are doing
 ![UKF Algorithm Overview 2](https://github.com/mithi/Fusion-UKF-CPP/blob/master/images/FusionUKF_overview_2.png)
