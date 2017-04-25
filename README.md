@@ -15,6 +15,7 @@ turning (yaw rate) at any point in time.**
 **This unscented kalman filter does just that.** 
 
 - NOTE: Compared with an [Extended Kalman Filter](https://github.com/mithi/Fusion-EKF-CPP) with a constant velocity model, RMSE should be lower for the unscented Kalman filter especially for velocity. The CTRV model is more precise than a constant velocity model. And UKF is also known for handling non-linear equations better than EKF.
+- https://www.seas.harvard.edu/courses/cs281/papers/unscented.pdf
 
 -----
 # CONTENTS
