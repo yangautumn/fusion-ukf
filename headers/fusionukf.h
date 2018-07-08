@@ -11,27 +11,28 @@
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
 
-class FusionUKF{
+class FusionUKF
+{
 
-  private:
-    bool initialized;
-    long long timestamp;
-    double nis;
-    VectorXd x = VectorXd(NX);
-    MatrixXd P = MatrixXd(NX, NX);
-    StatePredictor statePredictor;
-    MeasurementPredictor measurementPredictor;
-    StateUpdater stateUpdater;
+private:
+  bool initialized;
+  long long timestamp;
+  double nis;
+  VectorXd x = VectorXd(NX);
+  MatrixXd P = MatrixXd(NX, NX);
+  StatePredictor statePredictor;
+  MeasurementPredictor measurementPredictor;
+  StateUpdater stateUpdater;
 
-    //PRIVATE FUNCTIONS
-    void initialize(const DataPoint& data);
-    void update(const DataPoint& data);
+  //PRIVATE FUNCTIONS
+  void initialize(const DataPoint &data);
+  void update(const DataPoint &data);
 
-  public:
-    FusionUKF();
-    void process(const DataPoint& data);
-    VectorXd get() const;
-    double get_nis() const;
+public:
+  FusionUKF();
+  void process(const DataPoint &data);
+  VectorXd get() const;
+  double get_nis() const;
 };
 
 #endif //FUSIONUKF_H_

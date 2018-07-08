@@ -1,17 +1,20 @@
 #include "fusionukf.h"
 
-FusionUKF::FusionUKF(){
+FusionUKF::FusionUKF()
+{
   this->initialized = false;
 }
 
-void FusionUKF::initialize(const DataPoint& data){
+void FusionUKF::initialize(const DataPoint &data)
+{
   this->x = data.get_state();
   this->P = MatrixXd::Identity(NX, NX);
   this->timestamp = data.get_timestamp();
   this->initialized = true;
 }
 
-void FusionUKF::update(const DataPoint& data){
+void FusionUKF::update(const DataPoint &data)
+{
 
   VectorXd predicted_z;
   MatrixXd sigma_x;
@@ -39,21 +42,24 @@ void FusionUKF::update(const DataPoint& data){
   // updated the state and covariance of state... also get the nis
   this->stateUpdater.process(this->x, predicted_z, data.get(), S, this->P, sigma_x, sigma_z);
   this->x = this->stateUpdater.getx();
-  this->P  = this->stateUpdater.getP();
+  this->P = this->stateUpdater.getP();
   this->nis = this->stateUpdater.get_nis();
 
   // update timestamp
   this->timestamp = data.get_timestamp();
 }
 
-void FusionUKF::process(const DataPoint& data){
+void FusionUKF::process(const DataPoint &data)
+{
   this->initialized ? this->update(data) : this->initialize(data);
 }
 
-VectorXd FusionUKF::get() const {
+VectorXd FusionUKF::get() const
+{
   return this->x;
 }
 
-double FusionUKF::get_nis() const {
+double FusionUKF::get_nis() const
+{
   return this->nis;
 }
