@@ -150,7 +150,6 @@ int main(int argc, char *argv[])
     truth = all_truth_data[k].get_vec();
     sensor_data = all_sensor_data[k];
     timestamp = sensor_data.get_timestamp();
-
     sensor_type = sensor_data.get_type();
     sensor_name = ((sensor_type == DataPointType::RADAR) ? "radar" : "lidar");
     measurement = sensor_data.get_state();

@@ -32,6 +32,7 @@ private:
   MatrixXd predict_sigma(const MatrixXd &augmented_sigma, double dt);
   VectorXd predict_x(const MatrixXd &predicted_sigma);
   MatrixXd predict_P(const MatrixXd &predicted_sigma, const VectorXd &predicted_x);
+  VectorXd fx(const VectorXd &sigma_point, double dt);
 
 public:
   StatePredictor();

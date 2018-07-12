@@ -2,9 +2,10 @@
 
 StatePredictor::StatePredictor() {}
 
-MatrixXd StatePredictor::compute_augmented_sigma(const VectorXd &current_x, const MatrixXd &current_P)
+MatrixXd StatePredictor::compute_augmented_sigma(
+    const VectorXd &current_x,
+    const MatrixXd &current_P)
 {
-
   MatrixXd augmented_sigma = MatrixXd::Zero(NAUGMENTED, NSIGMA);
   VectorXd augmented_x = VectorXd::Zero(NAUGMENTED);
   MatrixXd augmented_P = MatrixXd::Zero(NAUGMENTED, NAUGMENTED);
@@ -28,68 +29,66 @@ MatrixXd StatePredictor::compute_augmented_sigma(const VectorXd &current_x, cons
   return augmented_sigma;
 }
 
+VectorXd StatePredictor::fx(const VectorXd &sigma_point, double dt)
+{
+  const double THRESH = 0.001;
+
+  /*************************************
+    * Get the current state
+    *************************************/
+  const double px = sigma_point(0);
+  const double py = sigma_point(1);
+  const double speed = sigma_point(2);
+  const double yaw = sigma_point(3);
+  const double yawrate = sigma_point(4);
+  const double speed_noise = sigma_point(5);
+  const double yawrate_noise = sigma_point(6);
+
+  /*************************************
+    * predict the next state with noise
+    * USING THE CTRV MODEL
+  *************************************/
+  const double cos_yaw = cos(yaw);
+  const double sin_yaw = sin(yaw);
+  const double dt2 = dt * dt;
+  const double p_noise = 0.5 * speed_noise * dt2;   // predicted position noise
+  const double y_noise = 0.5 * yawrate_noise * dt2; // predicted yaw noise
+  const double dyaw = yawrate * dt;                 // change in yaw
+  const double dspeed = speed * dt;                 // change in speed
+
+  const double p_speed = speed + speed_noise * dt;       // predicted speed = assumed constant speed + noise
+  const double p_yaw = yaw + dyaw + y_noise;             // predicted yaw
+  const double p_yawrate = yawrate + yawrate_noise * dt; // predicted yaw rate = assumed constant yawrate + noise
+
+  double p_px, p_py; // where predicted positions will be stored
+
+  if (fabs(yawrate) <= THRESH)
+  {
+    // moving straight
+    p_px = px + dspeed * cos_yaw + p_noise * cos_yaw;
+    p_py = py + dspeed * sin_yaw + p_noise * sin_yaw;
+  }
+  else
+  {
+    const double k = speed / yawrate;
+    const double theta = yaw + dyaw;
+    p_px = px + k * (sin(theta) - sin_yaw) + p_noise * cos_yaw;
+    p_py = py + k * (cos_yaw - cos(theta)) + p_noise * sin_yaw;
+  }
+
+  VectorXd sigma_x(NX);
+  sigma_x << p_px, p_py, p_speed, p_yaw, p_yawrate;
+
+  return sigma_x;
+}
+
 MatrixXd StatePredictor::predict_sigma(const MatrixXd &augmented_sigma, double dt)
 {
-
-  const double THRESH = 0.001;
-  MatrixXd predicted_sigma = MatrixXd(NX, NSIGMA);
+  MatrixXd predicted_sigma(NX, NSIGMA);
 
   for (int c = 0; c < NSIGMA; ++c)
   {
-
-    /*************************************
-    * Get the current state
-    *************************************/
-    const double px = augmented_sigma(0, c);
-    const double py = augmented_sigma(1, c);
-    const double speed = augmented_sigma(2, c);
-    const double yaw = augmented_sigma(3, c);
-    const double yawrate = augmented_sigma(4, c);
-    const double speed_noise = augmented_sigma(5, c);
-    const double yawrate_noise = augmented_sigma(6, c);
-
-    /*************************************
-    * predict the next state with noise
-    * USING THE CTRV MODEL
-    *************************************/
-    const double cos_yaw = cos(yaw);
-    const double sin_yaw = sin(yaw);
-    const double dt2 = dt * dt;
-    const double p_noise = 0.5 * speed_noise * dt2;   // predicted position noise
-    const double y_noise = 0.5 * yawrate_noise * dt2; // predicted yaw noise
-    const double dyaw = yawrate * dt;                 //change in yaw
-    const double dspeed = speed * dt;                 //change in speed
-
-    const double p_speed = speed + speed_noise * dt;       // predicted speed = assumed constant speed + noise
-    const double p_yaw = yaw + dyaw + y_noise;             // predicted yaw
-    const double p_yawrate = yawrate + yawrate_noise * dt; // predicted yaw rate = assumed constant yawrate + noise
-
-    double p_px, p_py; // where predicted positions will be stored
-
-    if (fabs(yawrate) <= THRESH)
-    {
-
-      // moving straight
-      p_px = px + dspeed * cos_yaw + p_noise * cos_yaw;
-      p_py = py + dspeed * sin_yaw + p_noise * sin_yaw;
-    }
-    else
-    {
-
-      const double k = speed / yawrate;
-      const double theta = yaw + dyaw;
-      p_px = px + k * (sin(theta) - sin_yaw) + p_noise * cos_yaw;
-      p_py = py + k * (cos_yaw - cos(theta)) + p_noise * sin_yaw;
-    }
-
-    /*************************************
-    * Write the prediction to the appropriate column
-    *************************************/
-    predicted_sigma(0, c) = p_px;
-    predicted_sigma(1, c) = p_py;
-    predicted_sigma(2, c) = p_speed;
-    predicted_sigma(3, c) = p_yaw;
-    predicted_sigma(4, c) = p_yawrate;
+    predicted_sigma.col(c) = fx(augmented_sigma.col(c), dt);
   }
 
   return predicted_sigma;
@@ -97,7 +96,6 @@ MatrixXd StatePredictor::predict_sigma(const MatrixXd &augmented_sigma, double d
 
 VectorXd StatePredictor::predict_x(const MatrixXd &predicted_sigma)
 {
-
   VectorXd predicted_x = VectorXd::Zero(NX);
 
   for (int c = 0; c < NSIGMA; c++)
@@ -110,14 +108,11 @@ VectorXd StatePredictor::predict_x(const MatrixXd &predicted_sigma)
 
 MatrixXd StatePredictor::predict_P(const MatrixXd &predicted_sigma, const VectorXd &predicted_x)
 {
-
   MatrixXd predicted_P = MatrixXd::Zero(NX, NX);
-
   VectorXd dx = VectorXd(NX);
 
   for (int c = 0; c < NSIGMA; c++)
   {
-
     dx = predicted_sigma.col(c) - predicted_x;
     dx(3) = normalize(dx(3));
     predicted_P += WEIGHTS[c] * dx * dx.transpose();
@@ -128,7 +123,6 @@ MatrixXd StatePredictor::predict_P(const MatrixXd &predicted_sigma, const Vector
 
 void StatePredictor::process(VectorXd &current_x, MatrixXd &current_P, double dt)
 {
-
   MatrixXd augmented_sigma = compute_augmented_sigma(current_x, current_P);
   this->sigma = predict_sigma(augmented_sigma, dt);
   this->x = predict_x(this->sigma);
